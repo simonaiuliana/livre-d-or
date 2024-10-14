@@ -2,8 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Livre d'or</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.png">
@@ -12,49 +11,47 @@
 <body>
 
     <h1>Livre d'or</h1>
-    <img src="img/email.png">
+    <img src="img/email.png" alt="Email Icon">
 
     <form action="/livreor/add" method="post" name="formulaire">
-    <h2>Laissez-nous un message</h2>
-    <% if (typeof submit_message !== 'undefined' && submit_message) { %>
-        <p class="<%= submit_status %>" id="submit-message"><%= submit_message %></p>
-    <% } %>
-    <label for="firstname">Prénom* </label>
-    <input type="text" placeholder="votre prenom" name="firstname" id="firstname" required><br>
-    <label for="lastname">Nom </label>
-    <input type="text" placeholder="votre nom" name="lastname" id="lastname"><br>
-    <label for="usermail">Email*</label>
-    <input type="email" placeholder="votre mail" name="usermail" id="usermail" required><br>
-    <label for="message">Message*</label><br>
-    <textarea id="message" name="message" rows="6" cols="40" required></textarea><br>
-    <span class="error" aria-live="polite"></span>
-    <h3>(*) Ce champ est obligatoire</h3>
-    <input type="submit" value="Envoyer">
-</form>
-
-    <div class="error"></div>
+        <h2>Laissez-nous un message</h2>
+        <% if (typeof submit_message !== 'undefined' && submit_message) { %>
+            <p class="<%= submit_status %>" id="submit-message"><%= submit_message %></p>
+        <% } %>
+        <label for="firstname">Prénom* </label>
+        <input type="text" placeholder="votre prenom" name="firstname" id="firstname" required><br>
+        <label for="lastname">Nom </label>
+        <input type="text" placeholder="votre nom" name="lastname" id="lastname"><br>
+        <label for="usermail">Email*</label>
+        <input type="email" placeholder="votre mail" name="usermail" id="usermail" required><br>
+        <label for="message">Message*</label><br>
+        <textarea id="message" name="message" rows="6" cols="40" required></textarea><br>
+        <span class="error" aria-live="polite"></span>
+        <h3>(*) Ce champ est obligatoire</h3>
+        <input type="submit" value="Envoyer">
+    </form>
 
     <h4>Messages précédents</h4>
     
-    <!-- Display the total number of messages -->
-    <div id="nbMessages">Il y a <%= totalComments %> messages écrits.</div>
+    <div id="nbMessages">Il y a <%= totalComments || 0 %> messages écrits.</div>
     
-    <!-- Render pagination links here -->
     <div id="pagination">
-        <%= paginationLinks %>
+        <%= paginationLinks || '' %>
     </div>
     
     <div id="messages">
-        <!-- Loop through messages and display them -->
-        <% messages.forEach(function(information) { %>
-            <div class="message">
-                <h5><%= information.firstname %> <%= information.lastname %> a envoyé ce message le <%= information.formatted_date %></h5>
-                <p><%= nl2br(information.message) %></p>
-            </div>
-        <% }); %>
+        <% if (messages && messages.length > 0) { %>
+            <% messages.forEach(function(information) { %>
+                <div class="message">
+                    <h5><%= information.firstname %> <%= information.lastname %> a envoyé ce message le <%= information.formatted_date %></h5>
+                    <p><%= nl2br(information.message) %></p>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>Aucun message à afficher.</p>
+        <% } %>
     </div>
     
     <script src="js/validation.js"></script>
 </body>
 </html>
-

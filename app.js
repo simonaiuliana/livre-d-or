@@ -1,28 +1,21 @@
 const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const livreorRoutes = require('./routes/livreorRoutes'); // Import the routes
 const app = express();
-const PORT = process.env.PORT || 3000;
+const db = require('./config/db'); // Database connection
+const livreorRouter = require('./routes/livreorRoutes'); // Update the path as necessary
 
-// Set up body parser middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // Middleware for form submissions
+app.use(express.json()); // Middleware for JSON bodies
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Use the router
+app.use('/livreor', livreorRouter);
 
-// Set the view engine to EJS
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-// Use the livreor routes
-app.use('/', livreorRoutes);
-
-// Define routes
-app.get('/', (req, res) => {
-    res.render('index'); // Render the 'index.ejs' view
+// Handle 404 errors
+app.use((req, res) => {
+    res.status(404).send('Page Not Found');
 });
 
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
